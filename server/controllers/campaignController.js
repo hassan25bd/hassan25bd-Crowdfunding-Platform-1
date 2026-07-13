@@ -43,6 +43,14 @@ export const createCampaign = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error('Missing required campaign fields');
   }
+  if (new Date(deadline) <= new Date()) {
+    res.status(400);
+    throw new Error('Deadline must be in the future');
+  }
+  if (minimumContribution > fundingGoal) {
+    res.status(400);
+    throw new Error('Minimum contribution cannot exceed the funding goal');
+  }
 
   const campaign = await Campaign.create({
     creatorEmail: req.user.email,
