@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { SITE_NAME } from '../utils/constants';
 
-export const Logo = ({ to = '/', className = '' }) => (
+export const Logo = ({ to = '/', className = '', hideTextOnMobile = false }) => (
   <Link to={to} className={`flex items-center gap-2 ${className}`}>
     <svg width="30" height="30" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
       <circle cx="16" cy="16" r="16" fill="#059669" />
@@ -10,6 +10,10 @@ export const Logo = ({ to = '/', className = '' }) => (
         fill="white"
       />
     </svg>
-    <span className="font-bold text-xl text-brand-800">{SITE_NAME}</span>
+    <span
+      className={`font-bold text-xl text-brand-800 ${hideTextOnMobile ? 'hidden sm:inline' : ''}`}
+    >
+      {SITE_NAME}
+    </span>
   </Link>
 );

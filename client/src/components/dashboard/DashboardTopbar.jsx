@@ -25,11 +25,11 @@ export const DashboardTopbar = ({ onMenuClick }) => {
               <path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
             </svg>
           </button>
-          <Logo to="/" />
+          <Logo to="/" hideTextOnMobile />
         </div>
 
-        <div className="flex items-center gap-4">
-          <span className="hidden rounded-full bg-brand-50 px-3 py-1 text-sm font-semibold text-brand-700 sm:inline">
+        <div className="flex items-center gap-2 sm:gap-4">
+          <span className="whitespace-nowrap rounded-full bg-brand-50 px-2.5 py-1 text-xs font-semibold text-brand-700 sm:px-3 sm:text-sm">
             {user.credits} credits
           </span>
           <NotificationBell />
@@ -40,7 +40,10 @@ export const DashboardTopbar = ({ onMenuClick }) => {
               <p className="text-xs capitalize text-gray-400">{user.role}</p>
             </div>
           </div>
-          <button onClick={handleLogout} className="text-sm font-medium text-gray-500 hover:text-brand-600">
+          <button
+            onClick={handleLogout}
+            className="text-sm font-medium text-gray-500 hover:text-brand-600"
+          >
             Logout
           </button>
         </div>
