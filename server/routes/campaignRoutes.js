@@ -4,6 +4,7 @@ import {
   getTopFundedCampaigns,
   getPublicStats,
   getMyCampaigns,
+  getAllCampaignsAdmin,
   getPendingCampaigns,
   getCampaignById,
   createCampaign,
@@ -21,6 +22,7 @@ router.get('/top-funded', getTopFundedCampaigns);
 router.get('/stats/public', getPublicStats);
 router.get('/mine', verifyToken, verifyRole('creator'), getMyCampaigns);
 router.get('/pending', verifyToken, verifyRole('admin'), getPendingCampaigns);
+router.get('/admin/all', verifyToken, verifyRole('admin'), getAllCampaignsAdmin);
 router.get('/:id', getCampaignById);
 router.post('/', verifyToken, verifyRole('creator'), createCampaign);
 router.patch('/:id', verifyToken, verifyRole('creator'), updateCampaign);

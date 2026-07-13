@@ -48,6 +48,11 @@ export const getCampaignById = asyncHandler(async (req, res) => {
   res.json(campaign);
 });
 
+export const getAllCampaignsAdmin = asyncHandler(async (req, res) => {
+  const campaigns = await Campaign.find().sort({ createdAt: -1 });
+  res.json(campaigns);
+});
+
 export const getMyCampaigns = asyncHandler(async (req, res) => {
   const campaigns = await Campaign.find({ creatorEmail: req.user.email }).sort({ deadline: -1 });
   res.json(campaigns);
