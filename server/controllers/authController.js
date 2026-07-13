@@ -8,6 +8,7 @@ import { SIGNUP_BONUS_CREDITS } from '../utils/constants.js';
 const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const PASSWORD_REGEX = /^(?=.*[A-Za-z])(?=.*\d).{6,}$/;
 
 const toPublicUser = (user) => ({
   id: user._id,
@@ -30,9 +31,9 @@ export const register = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error('Please provide a valid email address');
   }
-  if (password.length < 6) {
+  if (!PASSWORD_REGEX.test(password)) {
     res.status(400);
-    throw new Error('Password must be at least 6 characters long');
+    throw new Error('Password must be at least 6 characters and include a letter and a number');
   }
   if (!['supporter', 'creator'].includes(role)) {
     res.status(400);

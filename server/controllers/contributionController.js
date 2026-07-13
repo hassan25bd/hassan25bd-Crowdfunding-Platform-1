@@ -61,6 +61,9 @@ export const getMyContributions = asyncHandler(async (req, res) => {
   const limit = Math.max(parseInt(req.query.limit, 10) || 10, 1);
 
   const filter = { supporterEmail: req.user.email };
+  if (['pending', 'approved', 'rejected'].includes(req.query.status)) {
+    filter.status = req.query.status;
+  }
   const [contributions, total] = await Promise.all([
     Contribution.find(filter)
       .sort({ createdAt: -1 })
