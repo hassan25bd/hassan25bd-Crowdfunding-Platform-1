@@ -3,6 +3,17 @@ export const GITHUB_REPO_URL = 'https://github.com/hassan25bd/hassan25bd-Crowdfu
 export const CREDITS_PER_DOLLAR = 20;
 export const MIN_WITHDRAWAL_CREDITS = 200;
 
+export const CATEGORIES = [
+  'Technology',
+  'Art',
+  'Community',
+  'Health',
+  'Education',
+  'Environment',
+  'Music',
+  'Food',
+];
+
 export const CREDIT_PACKAGES = [
   { credits: 100, priceUsd: 10 },
   { credits: 300, priceUsd: 25 },
