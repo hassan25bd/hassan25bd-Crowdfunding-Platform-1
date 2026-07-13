@@ -20,6 +20,11 @@ import { CreatorHome } from './pages/dashboard/creator/CreatorHome';
 import { AddCampaign } from './pages/dashboard/creator/AddCampaign';
 import { MyCampaigns } from './pages/dashboard/creator/MyCampaigns';
 import { Withdrawals } from './pages/dashboard/creator/Withdrawals';
+import { AdminHome } from './pages/dashboard/admin/AdminHome';
+import { ManageUsers } from './pages/dashboard/admin/ManageUsers';
+import { ManageCampaigns } from './pages/dashboard/admin/ManageCampaigns';
+import { WithdrawalRequests } from './pages/dashboard/admin/WithdrawalRequests';
+import { Reports } from './pages/dashboard/admin/Reports';
 
 function App() {
   return (
@@ -108,6 +113,48 @@ function App() {
           element={
             <RoleRoute roles={['creator']}>
               <Withdrawals />
+            </RoleRoute>
+          }
+        />
+
+        {/* Admin */}
+        <Route
+          path="admin-home"
+          element={
+            <RoleRoute roles={['admin']}>
+              <AdminHome />
+            </RoleRoute>
+          }
+        />
+        <Route
+          path="manage-users"
+          element={
+            <RoleRoute roles={['admin']}>
+              <ManageUsers />
+            </RoleRoute>
+          }
+        />
+        <Route
+          path="manage-campaigns"
+          element={
+            <RoleRoute roles={['admin']}>
+              <ManageCampaigns />
+            </RoleRoute>
+          }
+        />
+        <Route
+          path="withdrawal-requests"
+          element={
+            <RoleRoute roles={['admin']}>
+              <WithdrawalRequests />
+            </RoleRoute>
+          }
+        />
+        <Route
+          path="reports"
+          element={
+            <RoleRoute roles={['admin']}>
+              <Reports />
             </RoleRoute>
           }
         />
