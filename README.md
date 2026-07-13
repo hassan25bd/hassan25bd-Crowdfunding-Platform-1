@@ -18,7 +18,7 @@ Email:    admin@crowdnest.com
 Password: Admin@12345
 ```
 
-> **Note on optional integrations:** the live deployment currently runs with only a real MongoDB Atlas database configured. Google Sign-In, Stripe, and imgBB keys have not been added yet, so on the live site: Google Sign-In won't complete, Purchase Credit automatically uses its dummy-payment fallback, and image fields fall back to pasting a URL instead of uploading. All three are fully implemented in code and will work as soon as real keys are added to the server/client environment variables on Vercel.
+> **Note on optional integrations:** the live deployment has a real MongoDB Atlas database and real Google OAuth configured. Stripe and imgBB keys have not been added yet, so on the live site: Purchase Credit automatically uses its dummy-payment fallback, and image fields fall back to pasting a URL instead of uploading. Both are fully implemented in code and will work as soon as real keys are added to the server/client environment variables on Vercel.
 
 Created by `server/scripts/seed.js`, along with demo creators, supporters, and campaigns so the platform isn't empty on first visit.
 
