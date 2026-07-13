@@ -1,6 +1,24 @@
 import asyncHandler from 'express-async-handler';
 import { Campaign } from '../models/Campaign.js';
+import { Contribution } from '../models/Contribution.js';
+import { User } from '../models/User.js';
 import { notify } from '../utils/notify.js';
+
+const refundApprovedContributions = async (campaignId) => {
+  const approved = await Contribution.find({ campaignId, status: 'approved' });
+  for (const contribution of approved) {
+    await User.updateOne(
+      { email: contribution.supporterEmail },
+      { $inc: { credits: contribution.amount } }
+    );
+    await notify({
+      message: `The campaign "${contribution.campaignTitle}" was removed, so your ${contribution.amount} credit contribution was refunded.`,
+      toEmail: contribution.supporterEmail,
+      actionRoute: '/dashboard/my-contributions',
+    });
+  }
+  await Contribution.deleteMany({ campaignId });
+};
 
 export const getCampaigns = asyncHandler(async (req, res) => {
   const { category, search } = req.query;
@@ -126,6 +144,7 @@ export const deleteCampaign = asyncHandler(async (req, res) => {
     throw new Error('You can only delete your own campaigns');
   }
 
+  await refundApprovedContributions(campaign._id);
   await campaign.deleteOne();
   res.json({ message: 'Campaign deleted' });
 });
@@ -137,6 +156,7 @@ export const adminDeleteCampaign = asyncHandler(async (req, res) => {
     throw new Error('Campaign not found');
   }
 
+  await refundApprovedContributions(campaign._id);
   await campaign.deleteOne();
   res.json({ message: 'Campaign deleted' });
 });
