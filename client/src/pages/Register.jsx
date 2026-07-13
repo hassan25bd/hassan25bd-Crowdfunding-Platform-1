@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { api } from '../api/axios';
 import { useAuth } from '../context/AuthContext';
+import { GoogleAuthButton } from '../components/GoogleAuthButton';
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -128,6 +129,14 @@ export const Register = () => {
             {submitting ? 'Creating account…' : 'Create account'}
           </button>
         </form>
+
+        <div className="my-6 flex items-center gap-3">
+          <div className="h-px flex-1 bg-gray-200" />
+          <span className="text-xs uppercase text-gray-400">or</span>
+          <div className="h-px flex-1 bg-gray-200" />
+        </div>
+
+        <GoogleAuthButton role={form.role} />
 
         <p className="mt-6 text-center text-sm text-gray-500">
           Already have an account?{' '}

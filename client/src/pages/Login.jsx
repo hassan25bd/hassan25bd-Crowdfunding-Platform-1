@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import { api } from '../api/axios';
 import { useAuth } from '../context/AuthContext';
+import { GoogleAuthButton } from '../components/GoogleAuthButton';
 
 export const Login = () => {
   const [email, setEmail] = useState('');
@@ -73,6 +74,14 @@ export const Login = () => {
             {submitting ? 'Logging in…' : 'Log in'}
           </button>
         </form>
+
+        <div className="my-6 flex items-center gap-3">
+          <div className="h-px flex-1 bg-gray-200" />
+          <span className="text-xs uppercase text-gray-400">or</span>
+          <div className="h-px flex-1 bg-gray-200" />
+        </div>
+
+        <GoogleAuthButton />
 
         <p className="mt-6 text-center text-sm text-gray-500">
           Don't have an account?{' '}
