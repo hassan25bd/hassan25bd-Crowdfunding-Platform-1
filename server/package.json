@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "dev:memory": "nodemon scripts/devMemoryServer.js"
+    "dev:memory": "nodemon scripts/devMemoryServer.js",
+    "seed": "node scripts/seed.js"
   },
   "keywords": [],
   "author": "",
