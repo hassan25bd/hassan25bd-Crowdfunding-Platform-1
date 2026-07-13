@@ -8,7 +8,7 @@ import { Modal } from '../components/Modal';
 
 export const CampaignDetails = () => {
   const { id } = useParams();
-  const { user } = useAuth();
+  const { user, refreshUser } = useAuth();
   const navigate = useNavigate();
 
   const [campaign, setCampaign] = useState(null);
@@ -74,6 +74,7 @@ export const CampaignDetails = () => {
       setAmount('');
       setMessage('');
       loadCampaign();
+      refreshUser();
     } catch (err) {
       toast.error(err.response?.data?.message || 'Could not submit contribution');
     } finally {
