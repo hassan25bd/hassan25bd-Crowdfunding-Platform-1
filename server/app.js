@@ -6,6 +6,7 @@ import campaignRoutes from './routes/campaignRoutes.js';
 import notificationRoutes from './routes/notificationRoutes.js';
 import contributionRoutes from './routes/contributionRoutes.js';
 import withdrawalRoutes from './routes/withdrawalRoutes.js';
+import paymentRoutes from './routes/paymentRoutes.js';
 
 export const createApp = () => {
   const app = express();
@@ -27,6 +28,7 @@ export const createApp = () => {
   app.use('/api/notifications', notificationRoutes);
   app.use('/api/contributions', contributionRoutes);
   app.use('/api/withdrawals', withdrawalRoutes);
+  app.use('/api/payments', paymentRoutes);
 
   app.use(notFound);
   app.use(errorHandler);
