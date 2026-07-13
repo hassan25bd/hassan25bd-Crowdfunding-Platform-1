@@ -4,8 +4,10 @@ import toast from 'react-hot-toast';
 import { api } from '../api/axios';
 import { useAuth } from '../context/AuthContext';
 import { GoogleAuthButton } from '../components/GoogleAuthButton';
+import { ImageUploadField } from '../components/ImageUploadField';
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const PASSWORD_REGEX = /^(?=.*[A-Za-z])(?=.*\d).{6,}$/;
 
 export const Register = () => {
   const [form, setForm] = useState({
@@ -26,7 +28,8 @@ export const Register = () => {
     const next = {};
     if (!form.name.trim()) next.name = 'Name is required';
     if (!EMAIL_REGEX.test(form.email)) next.email = 'Enter a valid email address';
-    if (form.password.length < 6) next.password = 'Password must be at least 6 characters';
+    if (!PASSWORD_REGEX.test(form.password))
+      next.password = 'Password must be at least 6 characters and include a letter and a number';
     setErrors(next);
     return Object.keys(next).length === 0;
   };
@@ -85,17 +88,11 @@ export const Register = () => {
             {errors.email && <p className="mt-1 text-xs text-red-600">{errors.email}</p>}
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700">
-              Profile picture URL <span className="font-normal text-gray-400">(optional)</span>
-            </label>
-            <input
-              value={form.profilePictureUrl}
-              onChange={update('profilePictureUrl')}
-              className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-brand-500 focus:outline-none focus:ring-1 focus:ring-brand-500"
-              placeholder="https://…"
-            />
-          </div>
+          <ImageUploadField
+            label="Profile picture (optional)"
+            value={form.profilePictureUrl}
+            onChange={(url) => setForm((f) => ({ ...f, profilePictureUrl: url }))}
+          />
 
           <div>
             <label className="block text-sm font-medium text-gray-700">Password</label>
