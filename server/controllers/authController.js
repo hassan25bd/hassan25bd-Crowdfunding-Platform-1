@@ -1,8 +1,11 @@
 import bcrypt from 'bcryptjs';
 import asyncHandler from 'express-async-handler';
+import { OAuth2Client } from 'google-auth-library';
 import { User } from '../models/User.js';
 import { generateToken } from '../utils/generateToken.js';
 import { SIGNUP_BONUS_CREDITS } from '../utils/constants.js';
+
+const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -75,6 +78,45 @@ export const login = asyncHandler(async (req, res) => {
   if (!isMatch) {
     res.status(401);
     throw new Error('Invalid email or password');
+  }
+
+  const token = generateToken(user);
+  res.json({ token, user: toPublicUser(user) });
+});
+
+export const googleLogin = asyncHandler(async (req, res) => {
+  const { idToken, role } = req.body;
+
+  if (!idToken) {
+    res.status(400);
+    throw new Error('idToken is required');
+  }
+
+  let payload;
+  try {
+    const ticket = await googleClient.verifyIdToken({
+      idToken,
+      audience: process.env.GOOGLE_CLIENT_ID,
+    });
+    payload = ticket.getPayload();
+  } catch (err) {
+    res.status(401);
+    throw new Error('Invalid Google token');
+  }
+
+  const email = payload.email.toLowerCase();
+  let user = await User.findOne({ email });
+
+  if (!user) {
+    const chosenRole = ['supporter', 'creator'].includes(role) ? role : 'supporter';
+    user = await User.create({
+      name: payload.name,
+      email,
+      authProvider: 'google',
+      profilePictureUrl: payload.picture || undefined,
+      role: chosenRole,
+      credits: SIGNUP_BONUS_CREDITS[chosenRole],
+    });
   }
 
   const token = generateToken(user);

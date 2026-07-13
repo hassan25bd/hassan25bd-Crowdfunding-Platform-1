@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "dev:memory": "node scripts/devMemoryServer.js"
+    "dev:memory": "nodemon scripts/devMemoryServer.js"
   },
   "keywords": [],
   "author": "",
