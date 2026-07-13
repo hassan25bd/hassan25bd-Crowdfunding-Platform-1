@@ -5,6 +5,7 @@ import authRoutes from './routes/authRoutes.js';
 import campaignRoutes from './routes/campaignRoutes.js';
 import notificationRoutes from './routes/notificationRoutes.js';
 import contributionRoutes from './routes/contributionRoutes.js';
+import withdrawalRoutes from './routes/withdrawalRoutes.js';
 
 export const createApp = () => {
   const app = express();
@@ -25,6 +26,7 @@ export const createApp = () => {
   app.use('/api/campaigns', campaignRoutes);
   app.use('/api/notifications', notificationRoutes);
   app.use('/api/contributions', contributionRoutes);
+  app.use('/api/withdrawals', withdrawalRoutes);
 
   app.use(notFound);
   app.use(errorHandler);
