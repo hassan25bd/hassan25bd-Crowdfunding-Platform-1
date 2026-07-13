@@ -4,7 +4,8 @@ A full-stack MERN crowdfunding platform where Creators launch campaigns, Support
 
 ## Links
 
-- **Live Site:** _pending deployment_
+- **Live Site:** https://client-nu-two-39.vercel.app
+- **Live API:** https://server-seven-beta-73.vercel.app
 - **Client-Side GitHub Repository:** https://github.com/hassan25bd/hassan25bd-Crowdfunding-Platform-1 (`/client`)
 - **Server-Side GitHub Repository:** https://github.com/hassan25bd/hassan25bd-Crowdfunding-Platform-1 (`/server`)
 
@@ -16,6 +17,8 @@ This project uses a single repository with two independent apps (`/client` and `
 Email:    admin@crowdnest.com
 Password: Admin@12345
 ```
+
+> **Note on optional integrations:** the live deployment currently runs with only a real MongoDB Atlas database configured. Google Sign-In, Stripe, and imgBB keys have not been added yet, so on the live site: Google Sign-In won't complete, Purchase Credit automatically uses its dummy-payment fallback, and image fields fall back to pasting a URL instead of uploading. All three are fully implemented in code and will work as soon as real keys are added to the server/client environment variables on Vercel.
 
 Created by `server/scripts/seed.js`, along with demo creators, supporters, and campaigns so the platform isn't empty on first visit.
 
