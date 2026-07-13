@@ -1,5 +1,6 @@
 import asyncHandler from 'express-async-handler';
 import { Campaign } from '../models/Campaign.js';
+import { User } from '../models/User.js';
 import { notify } from '../utils/notify.js';
 import { refundApprovedContributions } from '../utils/refundContributions.js';
 
@@ -19,6 +20,23 @@ export const getTopFundedCampaigns = asyncHandler(async (req, res) => {
     .sort({ amountRaised: -1 })
     .limit(6);
   res.json(campaigns);
+});
+
+export const getPublicStats = asyncHandler(async (req, res) => {
+  const [totalCampaigns, raisedAgg, totalSupporters] = await Promise.all([
+    Campaign.countDocuments({ status: 'approved' }),
+    Campaign.aggregate([
+      { $match: { status: 'approved' } },
+      { $group: { _id: null, total: { $sum: '$amountRaised' } } },
+    ]),
+    User.countDocuments({ role: 'supporter' }),
+  ]);
+
+  res.json({
+    totalCampaigns,
+    totalCreditsRaised: raisedAgg[0]?.total || 0,
+    totalSupporters,
+  });
 });
 
 export const getCampaignById = asyncHandler(async (req, res) => {

@@ -2,6 +2,7 @@ import express from 'express';
 import {
   getCampaigns,
   getTopFundedCampaigns,
+  getPublicStats,
   getMyCampaigns,
   getPendingCampaigns,
   getCampaignById,
@@ -17,6 +18,7 @@ const router = express.Router();
 
 router.get('/', getCampaigns);
 router.get('/top-funded', getTopFundedCampaigns);
+router.get('/stats/public', getPublicStats);
 router.get('/mine', verifyToken, verifyRole('creator'), getMyCampaigns);
 router.get('/pending', verifyToken, verifyRole('admin'), getPendingCampaigns);
 router.get('/:id', getCampaignById);
