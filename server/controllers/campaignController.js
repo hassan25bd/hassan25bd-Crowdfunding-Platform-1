@@ -1,5 +1,6 @@
 import asyncHandler from 'express-async-handler';
 import { Campaign } from '../models/Campaign.js';
+import { notify } from '../utils/notify.js';
 
 export const getCampaigns = asyncHandler(async (req, res) => {
   const { category, search } = req.query;
@@ -79,6 +80,41 @@ export const updateCampaign = asyncHandler(async (req, res) => {
   res.json(campaign);
 });
 
+export const getPendingCampaigns = asyncHandler(async (req, res) => {
+  const campaigns = await Campaign.find({ status: 'pending' }).sort({ createdAt: 1 });
+  res.json(campaigns);
+});
+
+export const updateCampaignStatus = asyncHandler(async (req, res) => {
+  const { status } = req.body;
+  if (!['approved', 'rejected', 'suspended'].includes(status)) {
+    res.status(400);
+    throw new Error('Status must be approved, rejected, or suspended');
+  }
+
+  const campaign = await Campaign.findById(req.params.id);
+  if (!campaign) {
+    res.status(404);
+    throw new Error('Campaign not found');
+  }
+
+  campaign.status = status;
+  await campaign.save();
+
+  const messages = {
+    approved: `Your campaign "${campaign.title}" was approved and is now live.`,
+    rejected: `Your campaign "${campaign.title}" was rejected by the admin.`,
+    suspended: `Your campaign "${campaign.title}" was suspended by the admin.`,
+  };
+  await notify({
+    message: messages[status],
+    toEmail: campaign.creatorEmail,
+    actionRoute: '/dashboard/my-campaigns',
+  });
+
+  res.json(campaign);
+});
+
 export const deleteCampaign = asyncHandler(async (req, res) => {
   const campaign = await Campaign.findById(req.params.id);
   if (!campaign) {
@@ -88,6 +124,17 @@ export const deleteCampaign = asyncHandler(async (req, res) => {
   if (campaign.creatorEmail !== req.user.email) {
     res.status(403);
     throw new Error('You can only delete your own campaigns');
+  }
+
+  await campaign.deleteOne();
+  res.json({ message: 'Campaign deleted' });
+});
+
+export const adminDeleteCampaign = asyncHandler(async (req, res) => {
+  const campaign = await Campaign.findById(req.params.id);
+  if (!campaign) {
+    res.status(404);
+    throw new Error('Campaign not found');
   }
 
   await campaign.deleteOne();
